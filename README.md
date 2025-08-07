@@ -1,6 +1,78 @@
 # ProgrammerCommunity
-An exclusive community exchange forum for professional programmers.
+An exclusive community exchange forum for professional programmers.  
+职业程序员专属的社区交流论坛。
 
+## 项目简介
+`ProgrammerCommunity` 是一套前后端不分离的编码社区交流系统/网站（严格来说属于：后端渲染（`Thymeleaf`）和前后端半分离（`jQuery`+`Ajax`）的混合模式），基于目前主流 Java Web 技术栈（`Spring` + `SpringBoot` + `MyBatis` + `MySQL` + `Redis` + `Kafka` + `Elasticsearch` + `Spring Security` + ...）开发。包含帖子、评论、私信、系统通知、点赞、关注、搜索、用户设置、数据统计等功能模块。
+
+## 技术栈
+### 开发环境
+- **Java 版本**：8
+- **操作系统**：Windows 10 / Linux
+- **构建工具**：Apache Maven
+- **集成开发工具**：Intellij IDEA / Eclipse
+- **版本控制工具**：Git
+- **应用服务器**：Apache Tomcat
+- **接口测试工具**：Postman / Api Fox
+- **压力测试工具**：Apache JMete
+
+### 后端：
+- Spring
+- Spring Boot 2.1.5 RELEASE
+- Spring MVC
+- ORM：MyBatis
+- **数据库**：MySQL 5.7
+- **分布式缓存**：Redis
+- **消息队列**：Kafka 2.13-2.6.0
+- **搜索引擎**：Elasticsearch 6.4.3
+- **本地缓存**：Caffeine
+- **安全**：Spring Security
+- **邮件任务**：Spring Mail
+- **分布式定时任务**：Spring Quartz
+- wkhtmltox 0.12.6-1
+- **日志**：SLF4J（日志接口）、Logback（日志实现）
+
+### 前端：
+- Thymeleaf
+- Bootstrap 4.x
+- Jquery
+- Ajax
+
+## 本地运行
+项目本地部署测试所需环境：
+
+- Java 8
+- MySQL 5.7
+- Redis
+- Kafka 2.13-2.6.0
+- Elasticsearch 6.4.3
+
+然后修改配置文件中的信息为自己的本地环境，项目相关配置信息用 xxxxxx 代替，请自行替换。
+
+本地运行需要修改的配置文件信息如下：
+
+1. **application-develop.properties：**
+
+- MySQL
+- Spring Mail（邮箱需要开启 SMTP 服务）
+- Kafka：consumer.group-id（该字段见 Kafka 安装包中的 consumer.proerties，可自行修改, 修改完毕后需要重启 Kafka）
+- Elasticsearch：cluster-name（该字段见 Elasticsearch 安装包中的 elasticsearch.yml，可自行修改）
+- 七牛云（需要新建一个七牛云的对象存储空间，用来存放上传的头像图片）
+
+2. **logback-spring-develop.xml：**
+
+- LOG_PATH：日志存放的位置
+
+项目运行前需要启动：
+
+- MySQL
+- Redis
+- Elasticsearch
+- Kafka
+
+此外，还需要提前创建并初始化数据库 community，然后依次运行项目 sql 文件夹下的 sql 文件以建立数据库表。
+
+## 功能列表
 ### 注册
 ### 登录 | 登出
 * 动态生成验证码
