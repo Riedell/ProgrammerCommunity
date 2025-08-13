@@ -41,4 +41,25 @@
         where id = #{id}
     </select>
 
+    <!-- 根据用户ID查询其评论过的帖子ID列表 -->
+    <select id="selectDiscussPostIdsByUserId" resultType="int">
+        select entity_id
+        from comment
+        where status = 0
+        and entity_type = 1
+        and user_id = #{userId}
+        GROUP BY entity_id
+        ORDER BY MAX(create_time) DESC
+        limit #{offset}, #{limit}
+    </select>
+
+    <!-- 根据用户ID查询其评论过的帖子总数 -->
+    <select id="selectDiscussPostCountByUserId" resultType="int">
+        select count(distinct entity_id)
+        from comment
+        where status = 0
+        and entity_type = 1
+        and user_id = #{userId}
+    </select>
+
 </mapper>

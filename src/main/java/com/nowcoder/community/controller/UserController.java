@@ -4,6 +4,7 @@ import com.nowcoder.community.annotation.LoginRequired;
 import com.nowcoder.community.entity.DiscussPost;
 import com.nowcoder.community.entity.Page;
 import com.nowcoder.community.entity.User;
+import com.nowcoder.community.service.CommentService;
 import com.nowcoder.community.service.DiscussPostService;
 import com.nowcoder.community.service.FollowService;
 import com.nowcoder.community.service.LikeService;
@@ -77,6 +78,9 @@ public class UserController implements CommunityConstant {
 
     @Autowired
     private DiscussPostService discussPostService;
+
+    @Autowired
+    private CommentService commentService;
 
     @LoginRequired
     @RequestMapping(path = "/setting", method = RequestMethod.GET)
@@ -235,6 +239,53 @@ public class UserController implements CommunityConstant {
         model.addAttribute("discussPosts", discussPosts);
 
         return "/site/my-post";
+    }
+
+    /**
+     * 个人主页 - 我的回复
+     * @param userId
+     * @param page
+     * @param model
+     * @return
+     */
+    @RequestMapping(path = "/myreply/{userId}", method = RequestMethod.GET)
+    public String getMyReplyPage(@PathVariable("userId") int userId, Page page, Model model) {
+        User user = userService.findUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("该用户不存在!");
+        }
+        model.addAttribute("user", user);
+
+        // 设置分页信息
+        page.setRows(commentService.findDiscussPostCountByUserId(userId));
+        page.setPath("/user/myreply/" + userId);
+
+        // 获取用户评论过的帖子ID列表
+        List<Integer> postIds = commentService.findDiscussPostIdsByUserId(userId, page.getOffset(), page.getLimit());
+        
+        // 获取帖子列表
+        List<Map<String, Object>> discussPosts = new ArrayList<>();
+        if (postIds != null && !postIds.isEmpty()) {
+            for (Integer postId : postIds) {
+                DiscussPost post = discussPostService.findDiscussPostById(postId);
+                if (post != null) {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("post", post);
+                    // 获取帖子的点赞数量
+                    long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, post.getId());
+                    map.put("likeCount", likeCount);
+                    
+                    // 获取用户在该帖子下的评论数量
+                    int commentCount = commentService.findCommentCount(ENTITY_TYPE_POST, postId);
+                    map.put("commentCount", commentCount);
+                    
+                    discussPosts.add(map);
+                }
+            }
+        }
+        model.addAttribute("discussPosts", discussPosts);
+
+        return "/site/my-reply";
     }
 
 }

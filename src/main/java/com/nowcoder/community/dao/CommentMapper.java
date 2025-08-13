@@ -2,6 +2,7 @@ package com.nowcoder.community.dao;
 
 import com.nowcoder.community.entity.Comment;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,4 +17,9 @@ public interface CommentMapper {
 
     Comment selectCommentById(int id);
 
+    // 根据用户ID查询其评论过的帖子ID列表
+    List<Integer> selectDiscussPostIdsByUserId(int userId, int offset, int limit);
+
+    // 根据用户ID查询其评论过的帖子总数
+    int selectDiscussPostCountByUserId(int userId);
 }
