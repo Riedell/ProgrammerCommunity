@@ -70,7 +70,8 @@ An exclusive community exchange forum for professional programmers.
 - Elasticsearch
 - Kafka
 
-此外，还需要提前创建并初始化数据库 community，然后依次运行项目 sql 文件夹下的 sql 文件以建立数据库表。
+此外，还需要提前创建并初始化数据库 community，然后依次运行项目 sql 文件夹下的 sql 文件以建立数据库表并初始化数据。
+ps：内置测试账号的密码统一为 `a123456` ，例：zhangsan/a123456
 
 ## 功能列表
 ### 注册
