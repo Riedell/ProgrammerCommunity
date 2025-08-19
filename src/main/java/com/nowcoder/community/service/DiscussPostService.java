@@ -86,6 +86,15 @@ public class DiscussPostService {
                 });
     }
 
+    /**
+     * 查询帖子列表
+     *
+     * @param userId 用户id，0表示查询所有
+     * @param offset 起始索引
+     * @param limit  每页数据量
+     * @param orderMode 排序模式，0-按帖子id排序，1-按置顶、加精、创建时间排序
+     * @return
+     */
     public List<DiscussPost> findDiscussPosts(int userId, int offset, int limit, int orderMode) {
         if (userId == 0 && orderMode == 1) {
             return postListCache.get(offset + ":" + limit);

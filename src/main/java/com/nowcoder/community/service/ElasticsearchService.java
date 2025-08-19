@@ -43,6 +43,21 @@ public class ElasticsearchService {
         discussRepository.deleteById(id);
     }
 
+    /**
+     * 全量同步数据库中的帖子到Elasticsearch
+     * @param posts 帖子列表
+     */
+    public void bulkSaveDiscussPost(List<DiscussPost> posts) {
+        discussRepository.saveAll(posts);
+    }
+
+    /**
+     * 搜索帖子
+     * @param keyword
+     * @param current
+     * @param limit
+     * @return
+     */
     public Page<DiscussPost> searchDiscussPost(String keyword, int current, int limit) {
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilders.multiMatchQuery(keyword, "title", "content"))
